@@ -1,4 +1,4 @@
-package my.comunity.common.dto;
+package my.comunity.common.model;
 
 public class User {
     private int id;

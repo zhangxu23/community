@@ -1,6 +1,6 @@
 package my.comunity.common.mapper;
 
-import my.comunity.common.dto.User;
+import my.comunity.common.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

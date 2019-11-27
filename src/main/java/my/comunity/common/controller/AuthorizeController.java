@@ -2,7 +2,7 @@ package my.comunity.common.controller;
 
 import my.comunity.common.dto.AccessTokenDTO;
 import my.comunity.common.dto.GithubUser;
-import my.comunity.common.dto.User;
+import my.comunity.common.model.User;
 import my.comunity.common.mapper.UserMapper;
 import my.comunity.common.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;

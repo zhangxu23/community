@@ -1,6 +1,6 @@
 package my.comunity.common.controller;
 
-import my.comunity.common.dto.User;
+import my.comunity.common.model.User;
 import my.comunity.common.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,6 @@ public class HellowController {
                 User user=userMapper.findByToken(token);
                 if(user!=null) {
                     request.getSession().setAttribute("user", user);
-                    System.out.println(user);
                 }
                 break;
             }
