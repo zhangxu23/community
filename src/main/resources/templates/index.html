@@ -8,7 +8,7 @@
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="js/jquery-3.4.1.min.js"></script>
-
+    <link rel="stylesheet" href="css/common.css">
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -66,6 +66,35 @@
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
+    <div class="container-fluid main">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 " >
+                <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span> 发现</h2>
+                <hr>
+
+                <div class="media" th:each="questionDto : ${questionDtos}">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded" th:src="${questionDto.user.avatarUrl}" src="https://avatars3.githubusercontent.com/u/52046198?v=4" alt="...">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading" th:text="${questionDto.title}">快速学会开发</h4>
+                        <span th:text="${questionDto.description}">点击进入 查看如何学习</span>
+                        <span class="text-desc"><span th:text="${questionDto.commentCount}"></span> 个回复 • <span
+                                th:text="${questionDto.viewCount}"></span> 次浏览 • <span
+                                th:text="${#dates.format(questionDto.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 " >
+                <h3>热门话题</h3>
+                • 问题标题: 请用精简的语言描述您发布的问题，不超过25字 <br>
+                • 问题补充: 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料<br>
+                • 选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字<br>
+            </div>
+        </div>
+    </div>
 </nav>
 </body>
 </html>

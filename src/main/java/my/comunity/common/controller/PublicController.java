@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 @Controller
 public class PublicController {
@@ -67,9 +68,12 @@ public class PublicController {
         }
         Question question=new Question();
         question.setTag(tag);
+        question.setCreator((long) user.getId());
         question.setTitle(title);
         question.setDescription(description);
         question.setCreator((long) user.getId());
+        question.setGmtCreate(new Date().getTime());
+        question.setGmtModified(System.currentTimeMillis());
         questionMapper.insert(question);
         return "redirect:/";
     }

@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class User {
     private int id;
-    private String account_id;
+    private String accountId;
     private String name;
     private String token;
-    private long gmt_create;
-    private long gmt_modify;
-    private String avatar_url;
+    private long gmtCreate;
+    private long gmtModify;
+    private String avatarUrl;
 }
