@@ -44,7 +44,6 @@ public class AuthorizeController {
             userMapper.insert(user);
             response.addCookie(new Cookie("token",token));
             request.getSession().setAttribute("user",user);
-            System.out.println("登陆成功“u"+user);
             return "redirect:/";
         }else{
             return "redirect:/";
