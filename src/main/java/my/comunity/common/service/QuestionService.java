@@ -1,5 +1,6 @@
 package my.comunity.common.service;
 
+import my.comunity.common.dto.PageDto;
 import my.comunity.common.dto.QuestionDto;
 import my.comunity.common.mapper.QuestionMapper;
 import my.comunity.common.mapper.UserMapper;
@@ -18,9 +19,9 @@ public class QuestionService {
     UserMapper userMapper;
     @Autowired
     QuestionMapper questionMapper;
-    public List<QuestionDto> list() {
+    public PageDto list(Integer page, Integer size) {
         List<QuestionDto> questionDtos = new ArrayList<>();
-        List<Question> questions = questionMapper.list();
+        List<Question> questions = questionMapper.list(size*(page-1),size);
         for (Question question : questions) {
             User u = userMapper.findById(question.getCreator());
             QuestionDto questionDto = new QuestionDto();
@@ -28,7 +29,11 @@ public class QuestionService {
             questionDto.setUser(u);
             questionDtos.add(questionDto);
         }
-        return questionDtos;
+        PageDto pageDto=new PageDto();
+        pageDto.setQuestionDtos(questionDtos);
+        Integer totalCount=questionMapper.count();
+        pageDto.setPaging(totalCount,page,size);
+        return pageDto;
     }
 
 }

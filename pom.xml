@@ -79,6 +79,7 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
         </dependency>
+
         <dependency>
             <groupId>cn.ucloud.ufile</groupId>
             <artifactId>ufile-client-java</artifactId>
@@ -88,6 +89,16 @@
 
     <build>
         <plugins>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 如果不设置fork,那么不会restart,devtools热部署不会起作用-->
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
+
 
             <plugin>
                 <groupId>org.flywaydb</groupId>

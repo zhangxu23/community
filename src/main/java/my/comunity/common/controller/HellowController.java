@@ -1,6 +1,6 @@
 package my.comunity.common.controller;
 
-import my.comunity.common.dto.QuestionDto;
+import my.comunity.common.dto.PageDto;
 import my.comunity.common.mapper.UserMapper;
 import my.comunity.common.model.User;
 import my.comunity.common.service.QuestionService;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @Controller
 public class HellowController {
@@ -26,13 +25,12 @@ public class HellowController {
     @Autowired
     QuestionService questionService;
     @GetMapping("/hellow")
-    public String hellow(@RequestParam("name")String name, Model model) {
+    public String hellow(@RequestParam(value = "name")String name, Model model) {
         model.addAttribute("name",name);
-
         return "hellow";
     }
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model,@RequestParam(value = "page",defaultValue = "1") Integer page,@RequestParam(value = "size",defaultValue = "5") Integer size) {
 
         Cookie[] cookies=request.getCookies();
         if(cookies!=null&&cookies.length!=0)
@@ -46,8 +44,8 @@ public class HellowController {
                 break;
             }
         }
-        List<QuestionDto> questionDtos=questionService.list();
-        model.addAttribute("questionDtos",questionDtos);
+        PageDto pageDtos=questionService.list(page,size);
+        model.addAttribute("pageDtos",pageDtos);
         return "index";
     }
 }
