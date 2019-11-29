@@ -30,7 +30,9 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" th:text="${questionDto.title}">快速学会开发</h4>
+                        <h4 class="media-heading">
+                            <a th:href="@{'/question/'+ ${questionDto.id}}" th:text="${questionDto.title}"></a>
+                        </h4>
                         <span th:text="${questionDto.description}">点击进入 查看如何学习</span>
                         <span class="text-desc"><span th:text="${questionDto.commentCount}"></span> 个回复 • <span
                                 th:text="${questionDto.viewCount}"></span> 次浏览 • <span
