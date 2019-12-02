@@ -2,6 +2,8 @@ package my.comunity.common.service;
 
 import my.comunity.common.dto.PageDto;
 import my.comunity.common.dto.QuestionDto;
+import my.comunity.common.exception.CustomizeErrorCode;
+import my.comunity.common.exception.CustomizeException;
 import my.comunity.common.mapper.QuestionMapper;
 import my.comunity.common.mapper.UserMapper;
 import my.comunity.common.model.Question;
@@ -42,6 +44,9 @@ public class QuestionService {
 
     public QuestionDto getById(Long id) {
         Question question=questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDto questionDto=new QuestionDto();
         BeanUtils.copyProperties(question, questionDto);
         User u = userMapper.selectByPrimaryKey(question.getCreator());
@@ -58,7 +63,10 @@ public class QuestionService {
             question.setGmtModified(System.currentTimeMillis());
             QuestionExample questionExample = new QuestionExample();
             questionExample.createCriteria().andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(question,questionExample);
+            int code=questionMapper.updateByExampleSelective(question,questionExample);
+            if(code!=1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }
