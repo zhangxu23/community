@@ -2,8 +2,8 @@ package my.comunity.common.controller;
 
 import my.comunity.common.dto.AccessTokenDTO;
 import my.comunity.common.dto.GithubUser;
-import my.comunity.common.model.User;
 import my.comunity.common.mapper.UserMapper;
+import my.comunity.common.model.User;
 import my.comunity.common.provider.GithubProvider;
 import my.comunity.common.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class AuthorizeController {
             user.setToken(token);
             user.setAvatarUrl(githubUser.getAvatar_url());
             user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModify(user.getGmtCreate());
+            user.setGmtModified(user.getGmtCreate());
             userService.createOrUpdate(user);
             response.addCookie(new Cookie("token",token));
             request.getSession().setAttribute("user",user);

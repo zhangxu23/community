@@ -32,7 +32,7 @@ public class PublicController {
         return "public";
     }
     @GetMapping("/public/{id}")
-    public String edit(@PathVariable("id") Integer id,Model model){
+    public String edit(@PathVariable("id") Long id,Model model){
         QuestionDto question=questionService.getById(id);
         model.addAttribute("title",question.getTitle());
         model.addAttribute("tag",question.getTag());

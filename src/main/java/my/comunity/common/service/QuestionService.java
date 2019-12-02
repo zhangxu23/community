@@ -5,7 +5,9 @@ import my.comunity.common.dto.QuestionDto;
 import my.comunity.common.mapper.QuestionMapper;
 import my.comunity.common.mapper.UserMapper;
 import my.comunity.common.model.Question;
+import my.comunity.common.model.QuestionExample;
 import my.comunity.common.model.User;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,11 @@ public class QuestionService {
     UserMapper userMapper;
     @Autowired
     QuestionMapper questionMapper;
-    public PageDto list(Integer page, Integer size) {
+    public PageDto list(Integer  page, Integer size) {
         List<QuestionDto> questionDtos = new ArrayList<>();
-        List<Question> questions = questionMapper.list(size*(page-1),size);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(size*(page-1),size));
         for (Question question : questions) {
-            User u = userMapper.findById(question.getCreator());
+            User u = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDto questionDto = new QuestionDto();
             BeanUtils.copyProperties(question, questionDto);
             questionDto.setUser(u);
@@ -32,16 +34,17 @@ public class QuestionService {
         }
         PageDto pageDto=new PageDto();
         pageDto.setQuestionDtos(questionDtos);
-        Integer totalCount=questionMapper.count();
+        QuestionExample example = new QuestionExample();
+        Integer totalCount=(int) questionMapper.countByExample(example);
         pageDto.setPaging(totalCount,page,size);
         return pageDto;
     }
 
-    public QuestionDto getById(Integer id) {
-        Question question=questionMapper.getById(id);
+    public QuestionDto getById(Long id) {
+        Question question=questionMapper.selectByPrimaryKey(id);
         QuestionDto questionDto=new QuestionDto();
         BeanUtils.copyProperties(question, questionDto);
-        User u = userMapper.findById(question.getCreator());
+        User u = userMapper.selectByPrimaryKey(question.getCreator());
         questionDto.setUser(u);
         return questionDto;
     }
@@ -53,7 +56,9 @@ public class QuestionService {
             questionMapper.insert(question);
         }else {
             question.setGmtModified(System.currentTimeMillis());
-            questionMapper.update(question);
+            QuestionExample questionExample = new QuestionExample();
+            questionExample.createCriteria().andIdEqualTo(question.getId());
+            questionMapper.updateByExampleSelective(question,questionExample);
         }
     }
 }
