@@ -1,19 +1,20 @@
 package my.comunity.common.controller;
 
-import my.comunity.common.mapper.QuestionMapper;
+import my.comunity.common.dto.QuestionDto;
 import my.comunity.common.mapper.UserMapper;
 import my.comunity.common.model.Question;
 import my.comunity.common.model.User;
+import my.comunity.common.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 
 @Controller
 public class PublicController {
@@ -24,15 +25,26 @@ public class PublicController {
     @Autowired
     UserMapper userMapper;
     @Autowired
-    QuestionMapper questionMapper;
+    QuestionService questionService;
+
     @GetMapping("/public")
     public String pub(){
+        return "public";
+    }
+    @GetMapping("/public/{id}")
+    public String edit(@PathVariable("id") Integer id,Model model){
+        QuestionDto question=questionService.getById(id);
+        model.addAttribute("title",question.getTitle());
+        model.addAttribute("tag",question.getTag());
+        model.addAttribute("description",question.getDescription());
+        model.addAttribute("id",question.getId());
         return "public";
     }
     @PostMapping("/public")
     public String pub(@RequestParam(value = "title",required = false) String title,
                       @RequestParam(value = "description",required = false)String description,
-                      @RequestParam(value = "tag",required =false) String tag, Model model){
+                      @RequestParam(value = "tag",required =false) String tag,
+                      @RequestParam(value = "id",required = false) Long id, Model model){
         model.addAttribute("title",title);
         model.addAttribute("tag",tag);
         model.addAttribute("description",description);
@@ -59,9 +71,8 @@ public class PublicController {
         question.setTitle(title);
         question.setDescription(description);
         question.setCreator((long) user.getId());
-        question.setGmtCreate(new Date().getTime());
-        question.setGmtModified(System.currentTimeMillis());
-        questionMapper.insert(question);
+        question.setId(id);
+        questionService.createOrUpdate(question);
         return "redirect:/";
     }
 

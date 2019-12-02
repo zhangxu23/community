@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,5 +44,16 @@ public class QuestionService {
         User u = userMapper.findById(question.getCreator());
         questionDto.setUser(u);
         return questionDto;
+    }
+
+    public void createOrUpdate(Question question) {
+        if(question.getId()==null){
+            question.setGmtCreate(new Date().getTime());
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.insert(question);
+        }else {
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.update(question);
+        }
     }
 }
