@@ -69,4 +69,12 @@ public class QuestionService {
             }
         }
     }
+
+    public void incView(Long id) {
+        synchronized (QuestionService.class) {
+            Question question=questionMapper.selectByPrimaryKey(id);
+            question.setViewCount(question.getViewCount()+1);
+            questionMapper.updateByPrimaryKey(question);
+        }
+    }
 }
