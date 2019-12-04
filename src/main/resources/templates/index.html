@@ -14,6 +14,15 @@
 
 
 </head>
+<script type="application/javascript">
+    window.onload = function () {
+        var closable = window.localStorage.getItem("closable");
+        if (closable == "true") {
+            window.close();
+            window.localStorage.removeItem("closable");
+        }
+    }
+</script>
 <body>
 <nav class="navbar navbar-default">
     <div th:insert="~{navigation :: nav}"></div>

@@ -1,15 +1,23 @@
 package my.comunity.common.service;
 
+import my.comunity.common.dto.CommentDTO;
 import my.comunity.common.enums.CommentTypeEnum;
 import my.comunity.common.exception.CustomizeErrorCode;
 import my.comunity.common.exception.CustomizeException;
 import my.comunity.common.mapper.CommentMapper;
 import my.comunity.common.mapper.QuestionMapper;
+import my.comunity.common.mapper.UserMapper;
 import my.comunity.common.model.Comment;
+import my.comunity.common.model.CommentExample;
 import my.comunity.common.model.Question;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CommentService {
     @Autowired
@@ -17,6 +25,24 @@ public class CommentService {
 
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private UserMapper userMapper;
+    public List<CommentDTO> list(Long id){
+        CommentExample example = new CommentExample();
+        example.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        List<Comment> comments= commentMapper.selectByExample(example);
+        List<CommentDTO> commentDTOs=new ArrayList<>();
+        for(Comment comment:comments){
+            CommentDTO commentDTO=new CommentDTO();
+            BeanUtils.copyProperties(comment,commentDTO);
+            commentDTO.setUser(userMapper.selectByPrimaryKey(comment.getCommentator()));
+            commentDTOs.add(commentDTO);
+        }
+        return commentDTOs;
+
+
+    }
+
     @Transactional
     public void insert(Comment comment) {
         if(comment.getParentId()==null||comment.getParentId()==0)
