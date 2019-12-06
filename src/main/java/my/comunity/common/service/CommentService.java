@@ -30,6 +30,7 @@ public class CommentService {
     public List<CommentDTO> list(Long id){
         CommentExample example = new CommentExample();
         example.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        example.setOrderByClause("gmt_create desc");
         List<Comment> comments= commentMapper.selectByExample(example);
         List<CommentDTO> commentDTOs=new ArrayList<>();
         for(Comment comment:comments){

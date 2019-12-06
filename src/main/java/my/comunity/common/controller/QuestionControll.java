@@ -2,6 +2,7 @@ package my.comunity.common.controller;
 
 import my.comunity.common.dto.CommentDTO;
 import my.comunity.common.dto.QuestionDto;
+import my.comunity.common.model.Question;
 import my.comunity.common.service.CommentService;
 import my.comunity.common.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,10 @@ public class QuestionControll {
         questionService.incView(id);
         QuestionDto questionDto=questionService.getById(id);
         model.addAttribute("question",questionDto);
-
         List<CommentDTO> commentDTOS=commentService.list(id);
-        model.addAttribute("comments",commentDTOS);
+        model.addAttribute("commentDtos",commentDTOS);
+        List<Question> relatedQuestions = questionService.selectRelated(questionDto);
+        model.addAttribute("relatedQuestions", relatedQuestions);
         return "question";
     }
 
