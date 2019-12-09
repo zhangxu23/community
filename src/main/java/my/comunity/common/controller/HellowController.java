@@ -28,9 +28,11 @@ public class HellowController {
         return "hellow";
     }
     @GetMapping("/")
-    public String index(Model model,@RequestParam(value = "page",defaultValue = "1") Integer page,@RequestParam(value = "size",defaultValue = "5") Integer size) {
-        PageDto pageDtos=questionService.list(page,size);
+    public String index(Model model,@RequestParam(value = "page",defaultValue = "1") Integer page, @RequestParam(name = "size", defaultValue = "5") Integer size,
+                        @RequestParam(name = "search", required = false) String search) {
+        PageDto pageDtos=questionService.list(page,size,search);
         model.addAttribute("pageDtos",pageDtos);
+        model.addAttribute("search",search);
         return "index";
     }
 }

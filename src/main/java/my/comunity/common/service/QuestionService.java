@@ -27,9 +27,11 @@ public class QuestionService {
     UserMapper userMapper;
     @Autowired
     QuestionMapper questionMapper;
-    public PageDto list(Integer  page, Integer size) {
+    public PageDto list(Integer  page, Integer size,String search) {
         List<QuestionDto> questionDtos = new ArrayList<>();
         QuestionExample example1 = new QuestionExample();
+        if(!StringUtils.isBlank(search))
+            example1.createCriteria().andTitleLike(search);
         example1.setOrderByClause("gmt_create desc");
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(example1,new RowBounds(size*(page-1),size));
         for (Question question : questions) {
@@ -42,6 +44,8 @@ public class QuestionService {
         PageDto pageDto=new PageDto();
         pageDto.setQuestionDtos(questionDtos);
         QuestionExample example = new QuestionExample();
+        if(!StringUtils.isBlank(search))
+            example.createCriteria().andTitleLike(search);
         Integer totalCount=(int) questionMapper.countByExample(example);
         pageDto.setPaging(totalCount,page,size);
         return pageDto;
