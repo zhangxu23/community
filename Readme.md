@@ -55,4 +55,5 @@ http://localhost:1234
 mvn flyway:migrate
 mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 ```
+https://github.com/codedrinker/community
 
